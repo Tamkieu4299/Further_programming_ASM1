@@ -10,14 +10,16 @@ import java.util.Scanner;
 import java.io.FileWriter;
 
 class ManageSystem {
+
+    // Handle all the data from CSV File
     public static List<List<String>> handleData() throws Exception{
         Scanner in  = new Scanner(System.in);
 
         //Ask user for inputing the file
         System.out.println("Please enter a file or the system will render the DEFAULT FILE");
         String response = in.nextLine();
-        in.close();
-        String fileName = response == "" ? "./data/default.csv" : "./data/"+response+".csv";   
+        //in.close();
+        String fileName = response == "default" ? "./data/default.csv" : "./data/"+response+".csv";   
 
         List<List<String>> records = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
@@ -68,7 +70,7 @@ class ManageSystem {
     public static Student searchStudentById(EnrolmentManagement manager, String id){
         List<Student> studentsList = manager.studentsList;
         for(Student student: studentsList){
-            if(student.id == id) return student;
+            if(student.id.equals(id)) return student;
         }
         return null;
     }
@@ -77,7 +79,7 @@ class ManageSystem {
     public static Course searchCourseById(EnrolmentManagement manager, String id){
         List<Course> coursesList = manager.coursesList;
         for(Course course: coursesList){
-            if(course.id == id) return course;
+            if(course.id.equals(id)) return course;
         }
         return null;
     }
@@ -88,7 +90,7 @@ class ManageSystem {
         List<StudentEnrolment> enrolmentsList = manager.getAll();
 
         for(StudentEnrolment se: enrolmentsList){
-            if(se.student.id == idStudent){
+            if(se.student.id.equals(idStudent)){
                 if(records.containsKey(se.semester)) records.get(se.semester).add(se.course);
                 else {
                     List<Course> courses = new ArrayList<>();
@@ -118,7 +120,7 @@ class ManageSystem {
         List<StudentEnrolment> enrolmentsList = manager.getAll();
 
         for(StudentEnrolment se: enrolmentsList){
-            if(se.course.id == idCourse){
+            if(se.course.id.equals(idCourse)){
                 if(records.containsKey(se.semester)) records.get(se.semester).add(se.student);
                 else {
                     List<Student> students = new ArrayList<>();
@@ -148,7 +150,7 @@ class ManageSystem {
         List<StudentEnrolment> enrolmentsList = manager.getAll();
 
         for(StudentEnrolment se: enrolmentsList){
-            if(se.semester == semester){
+            if(se.semester.equals(semester)){
                 if(records.containsKey(se.semester)) records.get(se.semester).add(se.course);
                 else {
                     List<Course> courses = new ArrayList<>();
@@ -183,40 +185,52 @@ class ManageSystem {
 
         // Ask user for idStudent, idCourse, semester
         // Student
-        String idStudent = sc.nextLine();
+        String idStudent = "";
         boolean studentIncluded = false;
         while(!studentIncluded){
+            System.out.println("Input STUDENT ID");
+            String str = sc.nextLine().strip();
             for(Student student: studentsList){
-                if(student.id==idStudent) studentIncluded = true;
+                if(student.id.equals(str)) {
+                    studentIncluded = true;
+                    idStudent = str;
+                    break;
+                }
             }
-            System.out.println("Student not valid, please enter again");
-            idStudent = sc.nextLine();
         }
 
         // Course
-        String idCourse = sc.nextLine();
+        String idCourse = "";
         boolean courseIncluded = false;
         while(!courseIncluded){
+            System.out.println("Input COURSE ID");
+            String str = sc.nextLine().strip();
             for(Course course: coursesList){
-                if(course.id==idCourse) courseIncluded = true;
+                if(course.id.equals(str)) {
+                    courseIncluded = true;
+                    idCourse = str;
+                    break;
+                }
             }
-            System.out.println("Course not valid, please enter again");
-            idCourse = sc.nextLine();
         }
 
         // Semester
-        String semester = sc.nextLine();
+        String semester = "";
         boolean semesterIncluded = false;
         while(!semesterIncluded){
+            System.out.println("Input SEMESTER");
+            String str = sc.nextLine().strip();
             for(String sem: semestersList){
-                if(sem==semester) semesterIncluded = true;
+                if(sem.equals(str)) {
+                    semesterIncluded = true;
+                    semester = str;
+                    break;
+                }
             }
-            System.out.println("Semester not valid, please enter again");
-            semester = sc.nextLine();
         }
 
         // Scanner close
-        sc.close();
+        //sc.close();
 
         // Create an enrolment
         Student student = searchStudentById(manager, idStudent);
@@ -236,27 +250,33 @@ class ManageSystem {
 
         // Ask user for idStudent, semester
         // Student
-        System.out.println("Pleas enter STUDENT ID");
-        String idStudent = sc.nextLine();
+        String idStudent = "";
         boolean studentIncluded = false;
         while(!studentIncluded){
+            System.out.println("Input STUDENT ID");
+            String str = sc.nextLine().strip();
             for(Student student: studentsList){
-                if(student.id==idStudent) studentIncluded = true;
+                if(student.id.equals(str)) {
+                    studentIncluded = true;
+                    idStudent = str;
+                    break;
+                }
             }
-            System.out.println("Student not valid, please enter again");
-            idStudent = sc.nextLine();
         }
 
         // Semester
-        System.out.println("Please enter semester");
-        String semester = sc.nextLine();
+        String semester = "";
         boolean semesterIncluded = false;
         while(!semesterIncluded){
+            System.out.println("Input SEMESTER");
+            String str = sc.nextLine().strip();
             for(String sem: semestersList){
-                if(sem==semester) semesterIncluded = true;
+                if(sem.equals(str)) {
+                    semesterIncluded = true;
+                    semester = str;
+                    break;
+                }
             }
-            System.out.println("Semester not valid, please enter again");
-            semester = sc.nextLine();
         }
 
         // Print all the courses ENROLED to this student in a semester
@@ -271,20 +291,22 @@ class ManageSystem {
         System.out.println("Press 1: ADD course"+ "\nPress 2: DELETE course");
         int response = sc.nextInt();
 
+        // Add course
         if(response==1){
-            System.out.println("Please enter an ID COURSE");
-            // Course
-            String idCourse = sc.nextLine();
+            String idCourse = "";
             boolean courseIncluded = false;
             while(!courseIncluded){
+                System.out.println("Input COURSE ID");
+                String str = sc.nextLine().strip();
                 for(Course course: coursesList){
-                    if(course.id==idCourse) courseIncluded = true;
+                    if(course.id.equals(str)) {
+                        courseIncluded = true;
+                        idCourse = str;
+                        break;
+                    }
                 }
-                System.out.println("Course not valid, please enter again");
-                idCourse = sc.nextLine();
             }
-            sc.close();
-
+        
             // Create an enrolment
             Student student = searchStudentById(manager, idStudent);
             Course course = searchCourseById(manager, idCourse);
@@ -292,19 +314,21 @@ class ManageSystem {
             return manager.add(newEnrolment);
         }
 
+        // Delete course
         else {
-            System.out.println("Please enter an ID COURSE");
-            // Course
-            String idCourse = sc.nextLine();
+            String idCourse = "";
             boolean courseIncluded = false;
             while(!courseIncluded){
+                System.out.println("Input COURSE ID");
+                String str = sc.nextLine().strip();
                 for(Course course: coursesList){
-                    if(course.id==idCourse) courseIncluded = true;
+                    if(course.id.equals(str)) {
+                        courseIncluded = true;
+                        idCourse = str;
+                        break;
+                    }
                 }
-                System.out.println("Course not valid, please enter again");
-                idCourse = sc.nextLine();
             }
-            sc.close();
 
             // Delete an enrolment
             Student student = searchStudentById(manager, idStudent);
@@ -320,10 +344,9 @@ class ManageSystem {
         // Handle data from csv file from user
         List<List<String>> dataHandled = new ArrayList<>();
         dataHandled = handleData();
-
+        System.out.println(dataHandled);
         // Initialize Class EnrolmentManagement
         EnrolmentManagement manager = new EnrolmentManagement();
-
         // Data List
         List<Student> studentsList = manager.studentsList;
         List<Course> coursesList = manager.coursesList;
@@ -331,115 +354,140 @@ class ManageSystem {
 
         // Populate data into enrolmentsList of manager
         allEnrolments(manager, dataHandled);
-
         // Menu functions
         System.out.println("Welcome to the Enrolment Management Application");
-        System.out.println("Enter a number to go ahead: "
+
+        Scanner in = new Scanner(System.in);
+        //in.close();
+
+        // User need to enroll a student
+        while(true){
+            System.out.println("Enter a number to go ahead: "
                 +"\n1 => Enroll a student"
                 +"\n2 => Update an enrolment"
                 +"\n3 => CSV Output ALL courses of ONE student in ONE semester"
                 +"\n4 => CSV Output ALL students of ONE course in ONE semester"
                 +"\n5 => CSV Output ALL courses offered in ONE semester");
-
-        Scanner in = new Scanner(System.in);
-        int response = in.nextInt();
-        in.close();
-
-        // User need to enroll a student
-        if(response==1){
-            int process = enrollAStudent(manager);
-            while(process!=1){
-                process=enrollAStudent(manager);
-            }
-        }
-        
-        // User need to update an enrolment
-        else if(response==2){
-            int process = updateAnEnrolment(manager);
-            while(process!=1){
-                process = updateAnEnrolment(manager);
-            }
-        }
-        
-        // User need to CSV all Courses of a Student
-        else if(response==3){
-            Scanner sc = new Scanner(System.in);
-            // Ask user for idStudent, semester
-            // Student
-            String idStudent = sc.nextLine();
-            boolean studentIncluded = false;
-            while(!studentIncluded){
-                for(Student student: studentsList){
-                    if(student.id==idStudent) studentIncluded = true;
+            int response = in.nextInt();
+            if(response==1){
+                int process = enrollAStudent(manager);
+                while(process!=1){
+                    process=enrollAStudent(manager);
                 }
-                System.out.println("Student not valid, please enter again");
-                idStudent = sc.nextLine();
             }
-
-            // Semester
-            String semester = sc.nextLine();
-            boolean semesterIncluded = false;
-            while(!semesterIncluded){
-                for(String sem: semestersList){
-                    if(sem==semester) semesterIncluded = true;
+            
+            // User need to update an enrolment
+            else if(response==2){
+                int process = updateAnEnrolment(manager);
+                while(process!=1){
+                    process = updateAnEnrolment(manager);
                 }
-                System.out.println("Semester not valid, please enter again");
-                semester = sc.nextLine();
             }
 
-            // Scanner close
-            sc.close();
-            Map<String, List<Course>> coursesOneStudent = CoursesOneStudent(manager, idStudent, semester );
-        }
-
-        // User need to CSV all Students of one Course
-        else if(response==4){
-            Scanner sc = new Scanner(System.in);
-            // Ask user for idCourse, semester
-            // Course
-            String idCourse = sc.nextLine();
-            boolean courseIncluded = false;
-            while(!courseIncluded){
-                for(Course course: coursesList){
-                    if(course.id==idCourse) courseIncluded = true;
+            // User need to CSV all Courses of a Student
+            else if(response==3){
+                Scanner sc = new Scanner(System.in);
+                // Ask user for idStudent, semester
+                // Student
+                String idStudent = "";
+                boolean studentIncluded = false;
+                while(!studentIncluded){
+                    System.out.println("Input STUDENT ID");
+                    String str = sc.nextLine().strip();
+                    for(Student student: studentsList){
+                        if(student.id.equals(str)) {
+                            studentIncluded = true;
+                            idStudent = str;
+                            break;
+                        }
+                    }
                 }
-                System.out.println("Course not valid, please enter again");
-                idCourse = sc.nextLine();
-            }
 
-            // Semester
-            String semester = sc.nextLine();
-            boolean semesterIncluded = false;
-            while(!semesterIncluded){
-                for(String sem: semestersList){
-                    if(sem==semester) semesterIncluded = true;
+                // Semester
+                String semester = "";
+                boolean semesterIncluded = false;
+                while(!semesterIncluded){
+                    System.out.println("Input SEMESTER");
+                    String str = sc.nextLine().strip();
+                    for(String sem: semestersList){
+                        if(sem.equals(str)) {
+                            semesterIncluded = true;
+                            semester = str;
+                            break;
+                        }
+                    }
                 }
-                System.out.println("Semester not valid, please enter again");
-                semester = sc.nextLine();
+
+                // Scanner close
+                // sc.close();
+                Map<String, List<Course>> coursesOneStudent = CoursesOneStudent(manager, idStudent, semester );
             }
 
-            // Scanner close
-            sc.close();
-            Map<String, List<Student>> studentsOneStudent = StudentsOneCourse(manager, idCourse, semester);
-        }
-
-        // User need to CSV all Courses offered in one semester
-        else if(response==5){
-            Scanner sc = new Scanner(System.in);
-            // Semester
-            String semester = sc.nextLine();
-            boolean semesterIncluded = false;
-            while(!semesterIncluded){
-                for(String sem: semestersList){
-                    if(sem==semester) semesterIncluded = true;
+            // User need to CSV all Students of one Course
+            else if(response==4){
+                Scanner sc = new Scanner(System.in);
+                // Ask user for idCourse, semester
+                // Course
+                String idCourse = "";
+                boolean courseIncluded = false;
+                while(!courseIncluded){
+                    System.out.println("Input COURSE ID");
+                    String str = sc.nextLine().strip();
+                    for(Course course: coursesList){
+                        if(course.id.equals(str)) {
+                            courseIncluded = true;
+                            idCourse = str;
+                            break;
+                        }
+                    }
                 }
-                System.out.println("Semester not valid, please enter again");
-                semester = sc.nextLine();
+
+                // Semester
+                String semester = "";
+                boolean semesterIncluded = false;
+                while(!semesterIncluded){
+                    System.out.println("Input SEMESTER");
+                    String str = sc.nextLine().strip();
+                    for(String sem: semestersList){
+                        if(sem.equals(str)) {
+                            semesterIncluded = true;
+                            semester = str;
+                            break;
+                        }
+                    }
+                }
+
+                // Scanner close
+                // sc.close();
+                Map<String, List<Student>> studentsOneStudent = StudentsOneCourse(manager, idCourse, semester);
             }
 
-            // Scanner close
-            sc.close();
-            Map<String, List<Course>> coursesOneSemester = CoursesOneSemester(manager,semester);
+            // User need to CSV all Courses offered in one semester
+            else if(response==5){
+                Scanner sc = new Scanner(System.in);
+                // Semester
+                String semester = "";
+                boolean semesterIncluded = false;
+                while(!semesterIncluded){
+                    System.out.println("Input SEMESTER");
+                    String str = sc.nextLine().strip();
+                    for(String sem: semestersList){
+                        if(sem.equals(str)) {
+                            semesterIncluded = true;
+                            semester = str;
+                            break;
+                        }
+                    }
+                }
+
+                // Scanner close
+                // sc.close();
+                Map<String, List<Course>> coursesOneSemester = CoursesOneSemester(manager,semester);
+            }
+            else if(response == 0){
+                System.out.println("Stay Safe !!! Good Bye");
+                break;
+            }
         }
     }
 }
