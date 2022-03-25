@@ -25,9 +25,9 @@ class EnrolmentManagement implements StudentEnrolmentManager{
 
     }
 
-    public int delete(StudentEnrolment enrolment) {
+    public int delete(Student student, Course course, String semester) {
         for(int i=0; i<enrolmentsList.size(); i++){
-            if(enrolmentsList.get(i)==enrolment) {
+            if(enrolmentsList.get(i).student.equals(student) && enrolmentsList.get(i).course.equals(course) && enrolmentsList.get(i).semester.equals(semester)) {
                 enrolmentsList.remove(i);
                 System.out.println("Successfully deleted !");
                 return 1;

@@ -31,7 +31,7 @@ class ManageSystem {
         }
         return records;
     }
-
+    
     // Populate all data into manager class
     public static void allEnrolments(EnrolmentManagement manager, List<List<String>> dataHandled){
         List<Student> studentsList = manager.studentsList;
@@ -333,8 +333,7 @@ class ManageSystem {
             // Delete an enrolment
             Student student = searchStudentById(manager, idStudent);
             Course course = searchCourseById(manager, idCourse);
-            StudentEnrolment deleteEnrolment = new StudentEnrolment(student, course, semester);
-            return manager.delete(deleteEnrolment);
+            return manager.delete(student, course, semester);
         }
     }
 
