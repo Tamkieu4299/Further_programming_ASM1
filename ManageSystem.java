@@ -351,9 +351,9 @@ class ManageSystem {
             }
 
             // Delete an enrolment
-            Student student = searchStudentById(manager, idStudent);
-            Course course = searchCourseById(manager, idCourse);
-            return manager.delete(student, course, semester);
+            // Student student = searchStudentById(manager, idStudent);
+            // Course course = searchCourseById(manager, idCourse);
+            return manager.delete(idStudent, idCourse, semester);
         }
     }
 
