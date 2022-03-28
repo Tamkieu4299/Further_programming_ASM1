@@ -10,17 +10,16 @@ import java.util.Scanner;
 import java.io.FileWriter;
 
 class ManageSystem {
-
+	
     // Handle all the data from CSV File
     public static List<List<String>> handleData() throws Exception{
         Scanner in  = new Scanner(System.in);
-
+		
         //Ask user for inputing the file
         System.out.println("Please enter a file or the system will render the DEFAULT FILE");
         String response = in.nextLine();
         //in.close();
         String fileName = response == "default" ? "./data/default.csv" : "./data/"+response+".csv";   
-
         List<List<String>> records = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -59,7 +58,6 @@ class ManageSystem {
             // Add course into manager list
             if(!checkCourses.contains(idCourse)) coursesList.add(course);
             checkCourses.add(idCourse);
-            
             // StudentEnrolment class
             String semester = al.get(6);
             // Add semester into manager list
@@ -69,9 +67,6 @@ class ManageSystem {
             // Add an enrolment to the management system list
             manager.add(enrolment);
         }
-
-        // for(Student st: studentsList) System.out.println(st.name);
-        // for(Course co: coursesList) System.out.println(co.name);
     }
 
     // Search for student 
@@ -140,7 +135,7 @@ class ManageSystem {
                 }
             }
         }
-
+		
         if(records.get(semester)!=null){
             // Generate data to CSV by creat a list of courses
             List<String> studentsName = new ArrayList<>();
@@ -218,7 +213,7 @@ class ManageSystem {
                 }
             }
         }
-
+		
         // Course
         String idCourse = "";
         boolean courseIncluded = false;
@@ -248,9 +243,6 @@ class ManageSystem {
                 }
             }
         }
-
-        // Scanner close
-        //sc.close();
 
         // Create an enrolment
         Student student = searchStudentById(manager, idStudent);
@@ -351,8 +343,6 @@ class ManageSystem {
             }
 
             // Delete an enrolment
-            // Student student = searchStudentById(manager, idStudent);
-            // Course course = searchCourseById(manager, idCourse);
             return manager.delete(idStudent, idCourse, semester);
         }
     }
@@ -377,7 +367,6 @@ class ManageSystem {
         System.out.println("Welcome to the Enrolment Management Application");
 
         Scanner in = new Scanner(System.in);
-        //in.close();
 
         // User need to enroll a student
         while(true){
@@ -388,6 +377,8 @@ class ManageSystem {
                 +"\n4 => CSV Output ALL students of ONE course in ONE semester"
                 +"\n5 => CSV Output ALL courses offered in ONE semester");
             int response = in.nextInt();
+			
+			// User need to add Enrolment
             if(response==1){
                 int process = enrollAStudent(manager);
                 while(process!=1){
@@ -437,8 +428,6 @@ class ManageSystem {
                     }
                 }
 
-                // Scanner close
-                // sc.close();
                 Map<String, List<Course>> coursesOneStudent = CoursesOneStudent(manager, idStudent, semester );
             }
 
@@ -476,8 +465,6 @@ class ManageSystem {
                     }
                 }
 
-                // Scanner close
-                // sc.close();
                 Map<String, List<Student>> studentsOneStudent = StudentsOneCourse(manager, idCourse, semester);
             }
 
@@ -499,14 +486,14 @@ class ManageSystem {
                     }
                 }
 
-                // Scanner close
-                // sc.close();
                 Map<String, List<Course>> coursesOneSemester = CoursesOneSemester(manager,semester);
             }
             else if(response == 0){
                 System.out.println("Stay Safe !!! Good Bye");
                 break;
             }
+            
         }
     }
 }
+        
