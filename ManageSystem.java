@@ -86,6 +86,75 @@ class ManageSystem {
         return null;
     }
 
+    // Ask for student id function
+    public static String studentIDInput(EnrolmentManagement manager){
+        // Data List from manager
+        List<Student> studentsList = manager.studentsList;
+        Scanner sc = new Scanner(System.in);
+
+        // Student
+        String idStudent = "";
+        boolean studentIncluded = false;
+        while(!studentIncluded){
+            System.out.println("Input STUDENT ID");
+            String str = sc.nextLine().strip();
+            for(Student student: studentsList){
+                if(student.id.equals(str)) {
+                    studentIncluded = true;
+                    idStudent = str;
+                    break;
+                }
+            }
+        }
+        return idStudent;
+    }
+
+    // Ask for course id function
+    public static String courseIDInput(EnrolmentManagement manager){
+        // Data List from manager
+        List<Course> coursesList = manager.coursesList;
+        Scanner sc = new Scanner(System.in);
+
+        // Course
+        String idCourse = "";
+        boolean courseIncluded = false;
+        while(!courseIncluded){
+            System.out.println("Input COURSE ID");
+            String str = sc.nextLine().strip();
+            for(Course course: coursesList){
+                if(course.id.equals(str)) {
+                    courseIncluded = true;
+                    idCourse = str;
+                    break;
+                }
+            }
+        }
+        return idCourse;
+    }
+
+    // Ask for semester function
+    public static String semesterInput(EnrolmentManagement manager){
+        // Data List from manager
+        List<String> semestersList = manager.semestersList;
+        Scanner sc = new Scanner(System.in);
+
+        // Semester
+        String semester = "";
+        boolean semesterIncluded = false;
+        while(!semesterIncluded){
+            System.out.println("Input SEMESTER");
+            String str = sc.nextLine().strip();
+            for(String sem: semestersList){
+                if(sem.equals(str)) {
+                    semesterIncluded = true;
+                    semester = str;
+                    break;
+                }
+            }
+        }
+        return semester;
+    }
+
     // get Courses of one Student and write to CSV
     public static Map<String,List<Course>> CoursesOneStudent(EnrolmentManagement manager, String idStudent, String semester) throws Exception{
         Map<String, List<Course>> records = new HashMap<>();
@@ -189,59 +258,14 @@ class ManageSystem {
 
     // Enroll a student function
     public static int enrollAStudent(EnrolmentManagement manager){
-
-        // Data List from manager
-        List<Student> studentsList = manager.studentsList;
-        List<Course> coursesList = manager.coursesList;
-        List<String> semestersList = manager.semestersList;
-
-        Scanner sc = new Scanner(System.in);
-
-        // Ask user for idStudent, idCourse, semester
         // Student
-        String idStudent = "";
-        boolean studentIncluded = false;
-        while(!studentIncluded){
-            System.out.println("Input STUDENT ID");
-            String str = sc.nextLine().strip();
-            for(Student student: studentsList){
-                if(student.id.equals(str)) {
-                    studentIncluded = true;
-                    idStudent = str;
-                    break;
-                }
-            }
-        }
+        String idStudent = studentIDInput(manager);
 		
         // Course
-        String idCourse = "";
-        boolean courseIncluded = false;
-        while(!courseIncluded){
-            System.out.println("Input COURSE ID");
-            String str = sc.nextLine().strip();
-            for(Course course: coursesList){
-                if(course.id.equals(str)) {
-                    courseIncluded = true;
-                    idCourse = str;
-                    break;
-                }
-            }
-        }
+        String idCourse = courseIDInput(manager);
 
         // Semester
-        String semester = "";
-        boolean semesterIncluded = false;
-        while(!semesterIncluded){
-            System.out.println("Input SEMESTER");
-            String str = sc.nextLine().strip();
-            for(String sem: semestersList){
-                if(sem.equals(str)) {
-                    semesterIncluded = true;
-                    semester = str;
-                    break;
-                }
-            }
-        }
+        String semester =semesterInput(manager);
 
         // Create an enrolment
         Student student = searchStudentById(manager, idStudent);
@@ -254,41 +278,13 @@ class ManageSystem {
     public static int updateAnEnrolment(EnrolmentManagement manager) throws Exception{
 
         // Data List
-        List<Student> studentsList = manager.studentsList;
-        List<Course> coursesList = manager.coursesList;
-        List<String> semestersList = manager.semestersList;
         Scanner sc = new Scanner(System.in);
 
-        // Ask user for idStudent, semester
         // Student
-        String idStudent = "";
-        boolean studentIncluded = false;
-        while(!studentIncluded){
-            System.out.println("Input STUDENT ID");
-            String str = sc.nextLine().strip();
-            for(Student student: studentsList){
-                if(student.id.equals(str)) {
-                    studentIncluded = true;
-                    idStudent = str;
-                    break;
-                }
-            }
-        }
+        String idStudent = studentIDInput(manager);
 
         // Semester
-        String semester = "";
-        boolean semesterIncluded = false;
-        while(!semesterIncluded){
-            System.out.println("Input SEMESTER");
-            String str = sc.nextLine().strip();
-            for(String sem: semestersList){
-                if(sem.equals(str)) {
-                    semesterIncluded = true;
-                    semester = str;
-                    break;
-                }
-            }
-        }
+        String semester = semesterInput(manager);
 
         // Print all the courses ENROLED to this student in a semester
         Map<String, List<Course>> coursesOneStudent = CoursesOneStudent(manager,idStudent, semester);
@@ -304,19 +300,7 @@ class ManageSystem {
 
         // Add course
         if(response==1){
-            String idCourse = "";
-            boolean courseIncluded = false;
-            while(!courseIncluded){
-                System.out.println("Input COURSE ID");
-                String str = sc.nextLine().strip();
-                for(Course course: coursesList){
-                    if(course.id.equals(str)) {
-                        courseIncluded = true;
-                        idCourse = str;
-                        break;
-                    }
-                }
-            }
+            String idCourse = courseIDInput(manager);
         
             // Create an enrolment
             Student student = searchStudentById(manager, idStudent);
@@ -327,19 +311,7 @@ class ManageSystem {
 
         // Delete course
         else if(response==2) {
-            String idCourse = "";
-            boolean courseIncluded = false;
-            while(!courseIncluded){
-                System.out.println("Input COURSE ID");
-                String str = sc.nextLine().strip();
-                for(Course course: coursesList){
-                    if(course.id.equals(str)) {
-                        courseIncluded = true;
-                        idCourse = str;
-                        break;
-                    }
-                }
-            }
+            String idCourse = courseIDInput(manager);
 
             // Delete an enrolment
             return manager.delete(idStudent, idCourse, semester);
@@ -350,58 +322,18 @@ class ManageSystem {
 
     // Modify an enrolment function
     public static int modifyEnrolment(EnrolmentManagement manager) throws Exception{
-
-        // Data List
-        List<Student> studentsList = manager.studentsList;
-        List<Course> coursesList = manager.coursesList;
-        List<String> semestersList = manager.semestersList;
+        
         Scanner sc = new Scanner(System.in);
 
         // Ask user for idStudent, semester
         // Student
-        String idStudent = "";
-        boolean studentIncluded = false;
-        while(!studentIncluded){
-            System.out.println("Input STUDENT ID");
-            String str = sc.nextLine().strip();
-            for(Student student: studentsList){
-                if(student.id.equals(str)) {
-                    studentIncluded = true;
-                    idStudent = str;
-                    break;
-                }
-            }
-        }
+        String idStudent = studentIDInput(manager);
 
         // Course
-        String idCourse = "";
-        boolean courseIncluded = false;
-        while(!courseIncluded){
-            System.out.println("Input COURSE ID");
-            String str = sc.nextLine().strip();
-            for(Course course: coursesList){
-                if(course.id.equals(str)) {
-                    courseIncluded = true;
-                    idCourse = str;
-                    break;
-                }
-            }
-        }
+        String idCourse = courseIDInput(manager);
 
         // Semester
-        String semester = "";
-        boolean semesterIncluded = false;
-        while(!semesterIncluded){
-            System.out.println("Input SEMESTER");
-            String str = sc.nextLine().strip();
-            for(String sem: semestersList){
-                if(sem.equals(str)) {
-                    semesterIncluded = true;
-                    semester = str;
-                    break;
-                }
-            }
-        }
+        String semester = semesterInput(manager);
 
         // Ask user what type of information he wants to modify
         System.out.println("Which information you want to change: "
@@ -411,19 +343,8 @@ class ManageSystem {
         int response = sc.nextInt();
         if(response==1){
             // Student
-            String newidStudent = "";
-            boolean newstudentIncluded = false;
-            while(!newstudentIncluded){
-                System.out.println("Input STUDENT ID");
-                String str = sc.nextLine().strip();
-                for(Student student: studentsList){
-                    if(student.id.equals(str)) {
-                        newstudentIncluded = true;
-                        newidStudent = str;
-                        break;
-                    }
-                }
-            }
+            String newidStudent = studentIDInput(manager);
+
             // Create an enrolment
             Student student = searchStudentById(manager, newidStudent);
             Course course = searchCourseById(manager, idCourse);
@@ -434,19 +355,7 @@ class ManageSystem {
 
         else if(response==2){
             // Course
-            String newidCourse = "";
-            boolean newcourseIncluded = false;
-            while(!newcourseIncluded){
-                System.out.println("Input COURSE ID");
-                String str = sc.nextLine().strip();
-                for(Course course: coursesList){
-                    if(course.id.equals(str)) {
-                        newcourseIncluded = true;
-                        newidCourse = str;
-                        break;
-                    }
-                }
-            }
+            String newidCourse = courseIDInput(manager);
 
            // Create an enrolment
            Student student = searchStudentById(manager, idStudent);
@@ -458,19 +367,7 @@ class ManageSystem {
 
         else if(response==3){
             // Semester
-            String newsemester = "";
-            boolean newsemesterIncluded = false;
-            while(!newsemesterIncluded){
-                System.out.println("Input SEMESTER");
-                String str = sc.nextLine().strip();
-                for(String sem: semestersList){
-                    if(sem.equals(str)) {
-                        newsemesterIncluded = true;
-                        newsemester = str;
-                        break;
-                    }
-                }
-            }
+            String newsemester = semesterInput(manager);
 
             // Create an enrolment
             Student student = searchStudentById(manager, idStudent);
@@ -492,10 +389,6 @@ class ManageSystem {
         System.out.println(dataHandled);
         // Initialize Class EnrolmentManagement
         EnrolmentManagement manager = new EnrolmentManagement();
-        // Data List
-        List<Student> studentsList = manager.studentsList;
-        List<Course> coursesList = manager.coursesList;
-        List<String> semestersList = manager.semestersList;
 
         // Populate data into enrolmentsList of manager
         allEnrolments(manager, dataHandled);
@@ -541,95 +434,31 @@ class ManageSystem {
 
             // User need to CSV all Courses of a Student
             else if(response==3){
-                Scanner sc = new Scanner(System.in);
-                // Ask user for idStudent, semester
                 // Student
-                String idStudent = "";
-                boolean studentIncluded = false;
-                while(!studentIncluded){
-                    System.out.println("Input STUDENT ID");
-                    String str = sc.nextLine().strip();
-                    for(Student student: studentsList){
-                        if(student.id.equals(str)) {
-                            studentIncluded = true;
-                            idStudent = str;
-                            break;
-                        }
-                    }
-                }
+                String idStudent = studentIDInput(manager);
 
                 // Semester
-                String semester = "";
-                boolean semesterIncluded = false;
-                while(!semesterIncluded){
-                    System.out.println("Input SEMESTER");
-                    String str = sc.nextLine().strip();
-                    for(String sem: semestersList){
-                        if(sem.equals(str)) {
-                            semesterIncluded = true;
-                            semester = str;
-                            break;
-                        }
-                    }
-                }
+                String semester = semesterInput(manager);
 
                 Map<String, List<Course>> coursesOneStudent = CoursesOneStudent(manager, idStudent, semester );
             }
 
             // User need to CSV all Students of one Course
             else if(response==4){
-                Scanner sc = new Scanner(System.in);
                 // Ask user for idCourse, semester
                 // Course
-                String idCourse = "";
-                boolean courseIncluded = false;
-                while(!courseIncluded){
-                    System.out.println("Input COURSE ID");
-                    String str = sc.nextLine().strip();
-                    for(Course course: coursesList){
-                        if(course.id.equals(str)) {
-                            courseIncluded = true;
-                            idCourse = str;
-                            break;
-                        }
-                    }
-                }
+                String idCourse = courseIDInput(manager);
 
                 // Semester
-                String semester = "";
-                boolean semesterIncluded = false;
-                while(!semesterIncluded){
-                    System.out.println("Input SEMESTER");
-                    String str = sc.nextLine().strip();
-                    for(String sem: semestersList){
-                        if(sem.equals(str)) {
-                            semesterIncluded = true;
-                            semester = str;
-                            break;
-                        }
-                    }
-                }
+                String semester = semesterInput(manager);
                 
                 Map<String, List<Student>> studentsOneStudent = StudentsOneCourse(manager, idCourse, semester);
             }
 
             // User need to CSV all Courses offered in one semester
             else if(response==5){
-                Scanner sc = new Scanner(System.in);
                 // Semester
-                String semester = "";
-                boolean semesterIncluded = false;
-                while(!semesterIncluded){
-                    System.out.println("Input SEMESTER");
-                    String str = sc.nextLine().strip();
-                    for(String sem: semestersList){
-                        if(sem.equals(str)) {
-                            semesterIncluded = true;
-                            semester = str;
-                            break;
-                        }
-                    }
-                }
+                String semester = semesterInput(manager);
 
                 Map<String, List<Course>> coursesOneSemester = CoursesOneSemester(manager,semester);
             }
