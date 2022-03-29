@@ -21,8 +21,16 @@ class EnrolmentManagement implements StudentEnrolmentManager{
         return 0;
     }
 
-    public void update() {
-
+    public int update(String idStudent, String idCourse, String semester, StudentEnrolment updatedEnrolment) {
+        for(int i=0; i<enrolmentsList.size(); i++){
+            if(enrolmentsList.get(i).student.id.equals(idStudent) && enrolmentsList.get(i).course.id.equals(idCourse) && enrolmentsList.get(i).semester.equals(semester)){
+               enrolmentsList.set(i, updatedEnrolment);
+               System.out.println("Successully modify !");
+               return 1;
+            }
+        }
+        System.out.println("This enrolment hasn't been created before !");
+        return 0;
     }
 
     public int delete(String idStudent, String idCourse, String semester) {
