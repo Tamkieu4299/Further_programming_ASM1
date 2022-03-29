@@ -322,7 +322,7 @@ class ManageSystem {
 
     // Modify an enrolment function
     public static int modifyEnrolment(EnrolmentManagement manager) throws Exception{
-        
+
         Scanner sc = new Scanner(System.in);
 
         // Ask user for idStudent, semester
@@ -426,7 +426,7 @@ class ManageSystem {
 
             // User need to update an enrolment
             else if(response==2){
-                int process = updateAnEnrolment(manager);
+                int process = modifyEnrolment(manager);
                 while(process!=1){
                     process = updateAnEnrolment(manager);
                 }
