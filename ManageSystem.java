@@ -8,17 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.io.FileWriter;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class ManageSystem {
-	
+class ManageSystem {	
     // Handle all the data from CSV File
     public static List<List<String>> handleData() throws Exception{
         Scanner in  = new Scanner(System.in);
 		
         //Ask user for inputing the file
-        System.out.println("Please enter a file or the system will render the DEFAULT FILE");
+        System.out.println("Please enter a file or type \"default\" to render the DEFAULT FILE");
         String response = in.nextLine();
         String fileName = response == "default" ? "./data/default.csv" : "./data/"+response+".csv";   
         List<List<String>> records = new ArrayList<>();
@@ -136,8 +134,6 @@ class ManageSystem {
 
     // Ask for semester function
     public static String semesterInput(EnrolmentManagement manager){
-        // Data List from manager
-        // List<String> semestersList = manager.semestersList;
         Scanner sc = new Scanner(System.in);
 
         // Semester
@@ -152,18 +148,11 @@ class ManageSystem {
                 semester = str;
                 break;
             }
-            // for(String sem: semestersList){
-            //     if(sem.equals(str)) {
-            //         semesterIncluded = true;
-            //         semester = str;
-            //         break;
-            //     }
-            // }
         }
         return semester;
     }
 
-    // get Courses of one Student and write to CSV
+    // Get Courses of one Student and write to CSV
     public static Map<String,List<Course>> CoursesOneStudent(EnrolmentManagement manager, String idStudent, String semester) throws Exception{
         Map<String, List<Course>> records = new HashMap<>();
         List<StudentEnrolment> enrolmentsList = manager.getAll();
@@ -314,7 +303,7 @@ class ManageSystem {
         // Add course
         if(response==1){
             String idCourse = courseIDInput(manager);
-        
+            
             // Create an enrolment
             Student student = searchStudentById(manager, idStudent);
             Course course = searchCourseById(manager, idCourse);
@@ -437,7 +426,7 @@ class ManageSystem {
                     process = updateAnEnrolment(manager);
                 }
             }
-
+            
             // User need to update an enrolment
             else if(response==2){
                 int process = modifyEnrolment(manager);
