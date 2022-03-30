@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.io.FileWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class ManageSystem {
 	
@@ -135,7 +137,7 @@ class ManageSystem {
     // Ask for semester function
     public static String semesterInput(EnrolmentManagement manager){
         // Data List from manager
-        List<String> semestersList = manager.semestersList;
+        // List<String> semestersList = manager.semestersList;
         Scanner sc = new Scanner(System.in);
 
         // Semester
@@ -143,14 +145,20 @@ class ManageSystem {
         boolean semesterIncluded = false;
         while(!semesterIncluded){
             System.out.println("Input SEMESTER");
-            String str = sc.nextLine().strip();
-            for(String sem: semestersList){
-                if(sem.equals(str)) {
-                    semesterIncluded = true;
-                    semester = str;
-                    break;
-                }
+            String str = sc.nextLine().strip().toUpperCase();
+            String pattern = "\\d{4}[A-C]";
+            if(Pattern.matches(pattern, str)){
+                semesterIncluded = true;
+                semester = str;
+                break;
             }
+            // for(String sem: semestersList){
+            //     if(sem.equals(str)) {
+            //         semesterIncluded = true;
+            //         semester = str;
+            //         break;
+            //     }
+            // }
         }
         return semester;
     }
@@ -288,6 +296,11 @@ class ManageSystem {
 
         // Print all the courses ENROLED to this student in a semester
         Map<String, List<Course>> coursesOneStudent = CoursesOneStudent(manager,idStudent, semester);
+
+        if(coursesOneStudent.isEmpty()){
+            System.out.println("No enrolments for student in this semester !");
+            return 0;
+        }
         // Print out courses for user to choose
         System.out.println("This is all courses ENROLLED to this student in this semester");
         for(Course course: coursesOneStudent.get(semester)){
@@ -386,15 +399,15 @@ class ManageSystem {
         // Handle data from csv file from user
         List<List<String>> dataHandled = new ArrayList<>();
         dataHandled = handleData();
-        System.out.println(dataHandled);
         // Initialize Class EnrolmentManagement
         EnrolmentManagement manager = new EnrolmentManagement();
 
         // Populate data into enrolmentsList of manager
         allEnrolments(manager, dataHandled);
         // Menu functions
-        System.out.println("Welcome to the Enrolment Management Application");
+        System.out.println("======== Welcome to the Enrolment Management Application ========");
 
+        // Start scanner
         Scanner in = new Scanner(System.in);
 
         // User need to enroll a student
@@ -405,7 +418,8 @@ class ManageSystem {
                 +"\n2 => Modify an enrolment"
                 +"\n3 => CSV Output ALL courses of ONE student in ONE semester"
                 +"\n4 => CSV Output ALL students of ONE course in ONE semester"
-                +"\n5 => CSV Output ALL courses offered in ONE semester");
+                +"\n5 => CSV Output ALL courses offered in ONE semester"
+                +"\n6 => Quit");
             int response = in.nextInt();
 			
 			// User need to add Enrolment
@@ -462,7 +476,7 @@ class ManageSystem {
 
                 Map<String, List<Course>> coursesOneSemester = CoursesOneSemester(manager,semester);
             }
-            else if(response == 0){
+            else if(response==6) {
                 System.out.println("Stay Safe !!! Good Bye");
                 break;
             }
