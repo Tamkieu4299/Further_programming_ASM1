@@ -27,6 +27,10 @@ class ManageSystem {
                 records.add(Arrays.asList(values));
             }
         }
+        catch(Exception e){
+            System.out.println("File does not exist !");
+            return handleData();
+        }
         return records;
     }
     
@@ -35,7 +39,7 @@ class ManageSystem {
         List<Student> studentsList = manager.studentsList;
         List<Course> coursesList = manager.coursesList;
         List<String> semestersList = manager.semestersList;
-
+        
         List<String> checkCourses  = new ArrayList<>();
         List<String> checkStudents = new ArrayList<>();
 
@@ -177,7 +181,10 @@ class ManageSystem {
             File file = new File(filePath);
             FileWriter csvWriter = new FileWriter(file);
 
-            for(String course: coursesName) csvWriter.append(course+"\n");
+            for(String course: coursesName) {
+                System.out.println(course);
+                csvWriter.append(course+"\n");
+            }
             csvWriter.flush();
             csvWriter.close();
         }
@@ -210,11 +217,14 @@ class ManageSystem {
             File file = new File(filePath);
             FileWriter csvWriter = new FileWriter(file);
 
-            for(String student: studentsName) csvWriter.append(student+"\n");
+            for(String student: studentsName) {
+                csvWriter.append(student+"\n");
+                System.out.println(student);
+            }
             csvWriter.flush();
             csvWriter.close();
         }
-        else System.out.println("This student didn't enroll any courses in this semester");
+        else System.out.println("This course has no students in this semester !");
         return records;
     }
 
@@ -240,16 +250,22 @@ class ManageSystem {
             }
         }
 
-        List<String> coursesName = new ArrayList<>();
-        for(Course course : records.get(semester)) coursesName.add(course.id+" : "+course.name);
-    
-        String filePath = "./data/"+semester+".csv";
-        File file = new File(filePath);
-        FileWriter csvWriter = new FileWriter(file);
+        if(records.get(semester)!=null){
+            List<String> coursesName = new ArrayList<>();
+            for(Course course : records.get(semester)) coursesName.add(course.id+" : "+course.name);
+        
+            String filePath = "./data/"+semester+".csv";
+            File file = new File(filePath);
+            FileWriter csvWriter = new FileWriter(file);
 
-        for(String course: coursesName) csvWriter.append(course+"\n");
-        csvWriter.flush();
-        csvWriter.close();
+            for(String course: coursesName) {
+                csvWriter.append(course+"\n");
+                System.out.println(course);
+            }
+            csvWriter.flush();
+            csvWriter.close();
+        }
+        else System.out.println("This semester has no enrolment !");
         return records;
     }
 
@@ -286,16 +302,6 @@ class ManageSystem {
         // Print all the courses ENROLED to this student in a semester
         Map<String, List<Course>> coursesOneStudent = CoursesOneStudent(manager,idStudent, semester);
 
-        if(coursesOneStudent.isEmpty()){
-            System.out.println("No enrolments for student in this semester !");
-            return 0;
-        }
-        // Print out courses for user to choose
-        System.out.println("This is all courses ENROLLED to this student in this semester");
-        for(Course course: coursesOneStudent.get(semester)){
-            System.out.println(course.id + " - " + course.name);
-        }
-
         // Ask the user to ADD or DELETE course
         System.out.println("Press 1: ADD course"+ "\nPress 2: DELETE course");
         int response = sc.nextInt();
@@ -313,6 +319,7 @@ class ManageSystem {
 
         // Delete course
         else if(response==2) {
+            if(coursesOneStudent.get(semester)==null) return 0;
             String idCourse = courseIDInput(manager);
 
             // Delete an enrolment
