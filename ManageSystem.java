@@ -14,7 +14,7 @@ class ManageSystem {
     // Handle all the data from CSV File
     public static List<List<String>> handleData() throws Exception{
         Scanner in  = new Scanner(System.in);
-		
+
         //Ask user for inputing the file
         System.out.println("Please enter a file or type \"default\" to render the DEFAULT FILE");
         String response = in.nextLine();
@@ -176,7 +176,6 @@ class ManageSystem {
             // Generate data to CSV by creat a list of courses
             List<String> coursesName = new ArrayList<>();
             for(Course course : records.get(semester)) coursesName.add(course.id+" : "+ course.name);
-
             String filePath = "./data/"+idStudent+semester+".csv";
             File file = new File(filePath);
             FileWriter csvWriter = new FileWriter(file);
@@ -212,7 +211,7 @@ class ManageSystem {
             // Generate data to CSV by creat a list of courses
             List<String> studentsName = new ArrayList<>();
             for(Student student : records.get(semester)) studentsName.add(student.id+" : "+student.name);
-
+          
             String filePath = "./data/"+idCourse+semester+".csv";
             File file = new File(filePath);
             FileWriter csvWriter = new FileWriter(file);
@@ -290,7 +289,6 @@ class ManageSystem {
     // Update an enrolment function
     public static int updateAnEnrolment(EnrolmentManagement manager) throws Exception{
 
-        // Data List
         Scanner sc = new Scanner(System.in);
 
         // Student
@@ -340,7 +338,7 @@ class ManageSystem {
 
         // Course
         String idCourse = courseIDInput(manager);
-
+        
         // Semester
         String semester = semesterInput(manager);
 
@@ -402,10 +400,8 @@ class ManageSystem {
         allEnrolments(manager, dataHandled);
         // Menu functions
         System.out.println("======== Welcome to the Enrolment Management Application ========");
-
         // Start scanner
         Scanner in = new Scanner(System.in);
-
         // User need to enroll a student
         while(true){
             System.out.println("Enter a number to go ahead: "
