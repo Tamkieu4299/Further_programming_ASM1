@@ -12,13 +12,14 @@ import java.util.regex.Pattern;
 
 class ManageSystem {	
     // Handle all the data from CSV File
-    public static List<List<String>> handleData() throws Exception{
+    public static List<List<String>> handleData(){
         Scanner in  = new Scanner(System.in);
 
         //Ask user for inputing the file
         System.out.println("Please enter a file or type \"default\" to render the DEFAULT FILE");
         String response = in.nextLine();
-        String fileName = response == "default" ? "./data/default.csv" : "./data/"+response+".csv";   
+        System.out.println(response);
+        String fileName = response.equals("default") ? "./data/default.csv" : "./data/"+response+".csv";   
         List<List<String>> records = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;

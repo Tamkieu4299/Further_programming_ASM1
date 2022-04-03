@@ -12,25 +12,23 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class unitTest {
-    ManageSystem manager = new ManageSystem();
-    EnrolmentManagement enrolSystem  = new EnrolmentManagement();
-    InputStream sysInBackup = System.in;
+    public static ManageSystem manager = new ManageSystem();
+    public static EnrolmentManagement enrolSystem  = new EnrolmentManagement();
 
-    private ByteArrayOutputStream setStreams(String input) {
+    private ByteArrayOutputStream setStreams(String input){
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         ByteArrayOutputStream toReturn = new ByteArrayOutputStream();
         System.setOut(new PrintStream(toReturn));
         return toReturn;
     }
-
+    
     @Test
     public void testMethod_HandledData() throws Exception{
         System.out.println("Test handledData()");
         int linesOfDefaultCSV = 15;
-        ByteArrayInputStream in = new ByteArrayInputStream("default".getBytes());
+        InputStream in = new ByteArrayInputStream("default".getBytes());
         System.setIn(in);
-        assertEquals(linesOfDefaultCSV, manager.handleData().size());
-        
+        assertEquals(linesOfDefaultCSV, manager.handleData().size());    
     }
 
     @Test
@@ -57,6 +55,7 @@ public class unitTest {
         assertEquals("S103821", student.id);
         assertEquals("Son Minh Doan", student.name);
         assertEquals("11/15/199", student.birthdate);
+
     }
 
     @Test
