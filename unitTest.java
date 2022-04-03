@@ -1,31 +1,16 @@
 import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 public class unitTest {
     public static ManageSystem manager = new ManageSystem();
     public static EnrolmentManagement enrolSystem  = new EnrolmentManagement();
     InputStream sysInBackup = System.in;
 
-    private ByteArrayOutputStream setStreams(String input){
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-        ByteArrayOutputStream toReturn = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(toReturn));
-        return toReturn;
-    }
     
     @Test
     public void testMethod_HandledData() throws Exception{
