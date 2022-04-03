@@ -92,10 +92,10 @@ class ManageSystem {
     }
 
     // Ask for student id function
-    public static String studentIDInput(EnrolmentManagement manager){
+    public static String studentIDInput(Scanner sc ,EnrolmentManagement manager){
         // Data List from manager
         List<Student> studentsList = manager.studentsList;
-        Scanner sc = new Scanner(System.in);
+//        Scanner sc = new Scanner(System.in);
 
         // Student
         String idStudent = "";
@@ -115,10 +115,10 @@ class ManageSystem {
     }
 
     // Ask for course id function
-    public static String courseIDInput(EnrolmentManagement manager){
+    public static String courseIDInput(Scanner sc, EnrolmentManagement manager){
         // Data List from manager
         List<Course> coursesList = manager.coursesList;
-        Scanner sc = new Scanner(System.in);
+//        Scanner sc = new Scanner(System.in);
 
         // Course
         String idCourse = "";
@@ -134,12 +134,13 @@ class ManageSystem {
                 }
             }
         }
+        System.out.println(idCourse);
         return idCourse;
     }
 
     // Ask for semester function
-    public static String semesterInput(EnrolmentManagement manager){
-        Scanner sc = new Scanner(System.in);
+    public static String semesterInput(Scanner sc, EnrolmentManagement manager){
+//        Scanner sc = new Scanner(System.in);
 
         // Semester
         String semester = "";
@@ -271,14 +272,13 @@ class ManageSystem {
 
     // Enroll a student function
     public static int enrollAStudent(EnrolmentManagement manager){
+    	Scanner sc = new Scanner(System.in);
         // Student
-        String idStudent = studentIDInput(manager);
-		
+        String idStudent = studentIDInput(sc, manager);
         // Course
-        String idCourse = courseIDInput(manager);
-
+        String idCourse = courseIDInput(sc, manager);
         // Semester
-        String semester =semesterInput(manager);
+        String semester =semesterInput(sc, manager);
 
         // Create an enrolment
         Student student = searchStudentById(manager, idStudent);
@@ -293,10 +293,10 @@ class ManageSystem {
         Scanner sc = new Scanner(System.in);
 
         // Student
-        String idStudent = studentIDInput(manager);
+        String idStudent = studentIDInput(sc,manager);
 
         // Semester
-        String semester = semesterInput(manager);
+        String semester = semesterInput(sc,manager);
 
         // Print all the courses ENROLED to this student in a semester
         Map<String, List<Course>> coursesOneStudent = CoursesOneStudent(manager,idStudent, semester);
@@ -307,7 +307,7 @@ class ManageSystem {
 
         // Add course
         if(response==1){
-            String idCourse = courseIDInput(manager);
+            String idCourse = courseIDInput(sc,manager);
             
             // Create an enrolment
             Student student = searchStudentById(manager, idStudent);
@@ -319,7 +319,7 @@ class ManageSystem {
         // Delete course
         else if(response==2) {
             if(coursesOneStudent.get(semester)==null) return 0;
-            String idCourse = courseIDInput(manager);
+            String idCourse = courseIDInput(sc, manager);
 
             // Delete an enrolment
             return manager.delete(idStudent, idCourse, semester);
@@ -335,13 +335,13 @@ class ManageSystem {
 
         // Ask user for idStudent, semester
         // Student
-        String idStudent = studentIDInput(manager);
+        String idStudent = studentIDInput(sc, manager);
 
         // Course
-        String idCourse = courseIDInput(manager);
+        String idCourse = courseIDInput(sc,manager);
         
         // Semester
-        String semester = semesterInput(manager);
+        String semester = semesterInput(sc,manager);
 
         // Ask user what type of information he wants to modify
         System.out.println("Which information you want to change: "
@@ -351,7 +351,7 @@ class ManageSystem {
         int response = sc.nextInt();
         if(response==1){
             // Student
-            String newidStudent = studentIDInput(manager);
+            String newidStudent = studentIDInput(sc,manager);
 
             // Create an enrolment
             Student student = searchStudentById(manager, newidStudent);
@@ -363,7 +363,7 @@ class ManageSystem {
 
         else if(response==2){
             // Course
-            String newidCourse = courseIDInput(manager);
+            String newidCourse = courseIDInput(sc,manager);
 
            // Create an enrolment
            Student student = searchStudentById(manager, idStudent);
@@ -375,7 +375,7 @@ class ManageSystem {
 
         else if(response==3){
             // Semester
-            String newsemester = semesterInput(manager);
+            String newsemester = semesterInput(sc,manager);
 
             // Create an enrolment
             Student student = searchStudentById(manager, idStudent);
@@ -442,10 +442,10 @@ class ManageSystem {
             // User need to CSV all Courses of a Student
             else if(response==3){
                 // Student
-                String idStudent = studentIDInput(manager);
+                String idStudent = studentIDInput(in,manager);
 
                 // Semester
-                String semester = semesterInput(manager);
+                String semester = semesterInput(in,manager);
 
                 Map<String, List<Course>> coursesOneStudent = CoursesOneStudent(manager, idStudent, semester );
             }
@@ -454,10 +454,10 @@ class ManageSystem {
             else if(response==4){
                 // Ask user for idCourse, semester
                 // Course
-                String idCourse = courseIDInput(manager);
+                String idCourse = courseIDInput(in, manager);
 
                 // Semester
-                String semester = semesterInput(manager);
+                String semester = semesterInput(in, manager);
                 
                 Map<String, List<Student>> studentsOneStudent = StudentsOneCourse(manager, idCourse, semester);
             }
@@ -465,7 +465,7 @@ class ManageSystem {
             // User need to CSV all Courses offered in one semester
             else if(response==5){
                 // Semester
-                String semester = semesterInput(manager);
+                String semester = semesterInput(in, manager);
 
                 Map<String, List<Course>> coursesOneSemester = CoursesOneSemester(manager,semester);
             }

@@ -5,15 +5,20 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Scanner;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class unitTest {
     public static ManageSystem manager = new ManageSystem();
     public static EnrolmentManagement enrolSystem  = new EnrolmentManagement();
+    InputStream sysInBackup = System.in;
 
     private ByteArrayOutputStream setStreams(String input){
         System.setIn(new ByteArrayInputStream(input.getBytes()));
@@ -29,6 +34,7 @@ public class unitTest {
         InputStream in = new ByteArrayInputStream("default".getBytes());
         System.setIn(in);
         assertEquals(linesOfDefaultCSV, manager.handleData().size());    
+        System.setIn(sysInBackup);
     }
 
     @Test
@@ -54,7 +60,7 @@ public class unitTest {
         Student student = manager.searchStudentById(enrolSys, "S103821");
         assertEquals("S103821", student.id);
         assertEquals("Son Minh Doan", student.name);
-        assertEquals("11/15/199", student.birthdate);
+        assertEquals("11/15/1999", student.birthdate);
 
     }
 
@@ -75,13 +81,15 @@ public class unitTest {
     @Test
     public void testMethod_studentIdInput() throws Exception{
         System.out.println("Test studentIdInput()");
+        Scanner sc = new Scanner(System.in);
         EnrolmentManagement enrolSys = new EnrolmentManagement();
         ByteArrayInputStream in = new ByteArrayInputStream("default".getBytes());
         System.setIn(in);
         List<List<String>> dataHandled = manager.handleData();
         manager.allEnrolments(enrolSys, dataHandled);
         in = new ByteArrayInputStream("S101312".getBytes());
-        assertEquals("S101312", manager.studentIDInput(enrolSys));
+        System.setIn(in);
+        assertEquals("S101312", manager.studentIDInput(new Scanner(System.in), enrolSys));
     }
 
     @Test
@@ -92,8 +100,10 @@ public class unitTest {
         System.setIn(in);
         List<List<String>> dataHandled = manager.handleData();
         manager.allEnrolments(enrolSys, dataHandled);
-        in = new ByteArrayInputStream("COSC4030".getBytes());
-        assertEquals("COSC4030", manager.courseIDInput(enrolSys));
+        String str = "COSC4030";
+        in = new ByteArrayInputStream(str.getBytes());
+        System.setIn(in);
+        assertEquals("COSC4030", manager.courseIDInput(new Scanner(System.in),enrolSys));
     }
 
     @Test
@@ -105,7 +115,8 @@ public class unitTest {
         List<List<String>> dataHandled = manager.handleData();
         manager.allEnrolments(enrolSys, dataHandled);
         in = new ByteArrayInputStream("2022A".getBytes());
-        assertEquals("2022A", manager.semesterInput(enrolSys));
+        System.setIn(in);
+        assertEquals("2022A", manager.semesterInput(new Scanner(System.in),enrolSys));
     }
     
     @Test
@@ -118,8 +129,7 @@ public class unitTest {
         manager.allEnrolments(enrolSys, dataHandled);
         File filePath = new File("./data/S1013122020C.csv");
         manager.CoursesOneStudent(enrolSys, "S101312", "2020C");
-        assertTrue(filePath.exists());
-        
+        assertTrue(filePath.exists());    
     }
 
     @Test
@@ -156,7 +166,11 @@ public class unitTest {
         System.setIn(in);
         List<List<String>> dataHandled = manager.handleData();
         manager.allEnrolments(enrolSys, dataHandled);
-        ByteArrayOutputStream output = setStreams("S103821 COSC4030 2022B ");
+        String str = "S103821" + System.lineSeparator()
+        		+ "COSC4030" + System.lineSeparator()
+        		+ "2022B";
+        in = new ByteArrayInputStream(str.getBytes());
+        System.setIn(in);
         int res = manager.enrollAStudent(enrolSys);
         assertEquals(1, res);
     }
@@ -169,7 +183,12 @@ public class unitTest {
         System.setIn(in);
         List<List<String>> dataHandled = manager.handleData();
         manager.allEnrolments(enrolSys, dataHandled);
-        ByteArrayOutputStream output = setStreams("S103821 2021A 2 PHYS1230 ");
+        String str = "S103821" + System.lineSeparator()
+				+ "2021A" + System.lineSeparator()
+				+ "2" + System.lineSeparator()
+				+ "PHYS1230";
+        in = new ByteArrayInputStream(str.getBytes());
+        System.setIn(in);
         int res = manager.updateAnEnrolment(enrolSys);
         assertEquals(1, res);
     }
@@ -182,8 +201,14 @@ public class unitTest {
         System.setIn(in);
         List<List<String>> dataHandled = manager.handleData();
         manager.allEnrolments(enrolSys, dataHandled);
-        ByteArrayOutputStream output = setStreams("S103821 PHYS1230 2021A 2 COSC3321 ");
-        int res = manager.updateAnEnrolment(enrolSys);
+        String str = "S103821" + System.lineSeparator()
+				+ "PHYS1230" + System.lineSeparator()
+				+ "2021A" + System.lineSeparator()
+				+ "3" + System.lineSeparator()
+				+ "2022B";
+        in = new ByteArrayInputStream(str.getBytes());
+        System.setIn(in);
+        int res = manager.modifyEnrolment(enrolSys);
         assertEquals(1, res);
     }
 }
